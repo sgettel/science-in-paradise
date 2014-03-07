@@ -13,9 +13,9 @@ import time
 import numpy as np
 from scipy.optimize import leastsq
 
-import pyfits
-from pywcs import WCS
-from ephem import Equatorial, Ecliptic
+#import pyfits
+#from pywcs import WCS
+#from ephem import Equatorial, Ecliptic
 
 import matplotlib
 # Force matplotlib to not use any Xwindows backend.
@@ -55,27 +55,27 @@ def parse_files_like_a_boss():
                 while end_of_line == 0:
                     before,middle,after = thing_to_parse.partition('"title":"')
                     before2,middle2,after2 = after.partition('"')
-                    title.append(before2)
+                    title.append(before2.upper())
                     thing_to_parse = after2
 
                     before,middle,after = thing_to_parse.partition('"start":"')
                     before2,middle2,after2 = after.partition('"')
-                    start_date.append(before2)
+                    start_date.append(before2.upper())
                     thing_to_parse = after2
 
                     before,middle,after = thing_to_parse.partition('"end":"')
                     before2,middle2,after2 = after.partition('"')
-                    end_date.append(before2)
+                    end_date.append(before2.upper())
                     thing_to_parse = after2
 
                     before,middle,after = thing_to_parse.partition('"keywords":"')
                     before2,middle2,after2 = after.partition('"')
-                    keyword.append(before2)
+                    keyword.append(before2.upper())
                     thing_to_parse = after2
 
                     before,middle,after = thing_to_parse.partition('"location":"')
                     before2,middle2,after2 = after.partition('"')
-                    location.append(before2)
+                    location.append(before2.upper())
                     thing_to_parse = after2
 
                     year.append(i)
@@ -86,6 +86,22 @@ def parse_files_like_a_boss():
     return title,start_date,end_date,keyword,location,year
 
 
+def count_strings_like_a_boss(title,keyword,year,topicstring):
+    #print topicstring
+
+    topicstring = topicstring.upper()
+    years = np.arange(1996,2015)
+    total_per_year = np.zeros(len(years))
+
+    total = 0
+    for i in range(len(title)):
+        junk1 = title[i].count(topicstring)
+        junk2 = title[i].count(topicstring)
+        if junk1 > 0 or junk2 > 0:
+            total += 1
+    
+    print total, " meetings total on ", topicstring        
+    return total
 
 
 
@@ -95,10 +111,36 @@ def main():
 
     title,start_date,end_date,keyword,location,year = parse_files_like_a_boss()
 
+    year_plot = []
+    number_of_meetings = []
+
+
+    #=============================== MAKING PLOTS ====================================
+    #Meetings over years
+    for i in range(1996,2015):
+        year_plot.append(i)
+        number_to_find = 0
+        for j in range(len(year)):
+            if i == year[j]:
+                number_to_find = number_to_find+1
+        number_of_meetings.append(number_to_find)
+    year_plot = np.array([float(a) for a in year_plot])
+    number_of_meetings = np.array([float(a) for a in number_of_meetings])
+
+    figure_star = plot.figure()
+    ax_star = figure_star.add_subplot(111)
+    filename = 'Meetings_per_Year.eps'
+    ax_star.plot(year_plot,number_of_meetings,'og',markersize=10)
+    ax_star.set_xlabel('Year')
+    ax_star.set_ylabel('Number of Meetings')
+    figure_star.savefig(filename,format='eps')
+    figure_star.clf()
+    plot.close(figure_star)
+
+
+
     #
 
-    for i in range(len(title)):
-        print keyword[i]
 
 
 
