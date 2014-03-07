@@ -118,6 +118,7 @@ def parse_files_like_a_boss():
     end_date = []
     location = []
     year = []
+    n_meetings_that_year = np.zeros(len(range(1996,2014)))
 
     for i in range(1996,2014):
         if i > 1995:
@@ -155,8 +156,12 @@ def parse_files_like_a_boss():
 
                     if after2 == '':
                         end_of_line = 1
+    for i in range(1996,2014):
+        if year[i] == i:
+            n_meetings_that_year[i] = n_meetings_that_year[i]+1
+        
 
-    return title,start_date,end_date,keyword,location,year
+    return title,start_date,end_date,keyword,location,year,n_meetings_that_year
 
 
 def count_strings_like_a_boss(title,keyword,year,topicstring):
@@ -186,7 +191,7 @@ def main():
     #dummy = make_lists_like_a_boss()
 
     #Read in files and parse
-    title,start_date,end_date,keyword,location,year = parse_files_like_a_boss()
+    title,start_date,end_date,keyword,location,year,n_meetings_that_year = parse_files_like_a_boss()
 
 
     #make plots of meetings over years and meetings over months
