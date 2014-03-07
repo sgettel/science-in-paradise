@@ -184,6 +184,14 @@ def count_strings_like_a_boss(title,keyword,year,topicstring):
     print total, " meetings total on ", topicstring        
     return total, years, total_per_year
 
+def make_dictionary_like_a_boss(title,keyword,year,topicstring,dict={}):
+    print topicstring
+
+    total,years, total_per_year = count_strings_like_a_boss(title,keyword,year,topicstring)
+    dict[topicstring] = total_per_year
+
+    return dict
+    
 
 
 def main():
