@@ -141,9 +141,11 @@ def main():
     #Generate lists of meetings
     #dummy = make_lists_like_a_boss()
 
+    #Read in files and parse
     title,start_date,end_date,keyword,location,year = parse_files_like_a_boss()
 
-    #
+    #make plots of meetings over years and meetings over months
+    dummy = make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year)
 
     for i in range(len(title)):
         print keyword[i]
