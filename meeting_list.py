@@ -145,11 +145,14 @@ def count_strings_like_a_boss(title,keyword,year,topicstring):
     for i in range(len(title)):
         junk1 = title[i].count(topicstring)
         junk2 = title[i].count(topicstring)
+        yr = np.squeeze(np.where(years = year[i] ))
         if junk1 > 0 or junk2 > 0:
             total += 1
+            total_per_year[yr] += 1
+        
     
     print total, " meetings total on ", topicstring        
-    return total
+    return total, years, total_per_year
 
 
 
