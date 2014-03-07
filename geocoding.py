@@ -7,11 +7,7 @@ import json;
 import glob;
 import numpy;
 
-#for filename in numpy.sort(glob.glob("data/meeting_list_????_utf8.txt")):
-for filename in [
-       'data/meeting_list_2011_utf8.txt',
-       'data/meeting_list_2012_utf8.txt',
-       'data/meeting_list_2013_utf8.txt']:
+for filename in numpy.sort(glob.glob("data/meeting_list_????_utf8.txt")):
   print("Reading " + filename);
   with open(filename, "rt") as input:
     meetingArray = json.load(input);
