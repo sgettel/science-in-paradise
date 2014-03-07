@@ -25,7 +25,7 @@ import matplotlib.pyplot as plot
 
 import urllib2 as urllib
 
-def make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year):
+def make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year,n_meetings_that_year):
     year_plot = []
     number_of_meetings = []
     #Meetings over years
@@ -79,6 +79,9 @@ def make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,lo
     garbage,planet_year,planet_total = count_strings_like_a_boss(title,keyword,year,'PLANET')
     garbage,dark_year,dark_total = count_strings_like_a_boss(title,keyword,year,'DARK')
     garbage,cosmology_year,cosmology_total = count_strings_like_a_boss(title,keyword,year,'COSMOLOGY')
+    garbage,solar_year,solar_total = count_strings_like_a_boss(title,keyword,year,' SOLAR')
+    garbage,dynamic_year,dynamic_total = count_strings_like_a_boss(title,keyword,year,'DYNAMIC')
+
 
     figure_star = plot.figure()
     ax_star = figure_star.add_subplot(111)
@@ -88,13 +91,38 @@ def make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,lo
     ax_star.plot(galax_year,galax_total,'o-b',markersize=10,linewidth=5,label='Galaxies')
     ax_star.plot(planet_year,planet_total,'o-g',markersize=10,linewidth=5,label='Planets')
     ax_star.plot(cosmology_year,cosmology_total,'o-c',markersize=10,linewidth=5,label='Cosmology')
-    plot.legend(loc=2)
+    ax_star.plot(solar_year,solar_total,'o-y',markersize=10,linewidth=5,label='Solar')
+    ax_star.plot(dynamic_year,dynamic_total,'o-m',markersize=10,linewidth=5,label='Dynamic')
+
+
+    plot.legend(loc=2,ncol=2)
 
     ax_star.set_xlabel('Year')
     ax_star.set_ylabel('Number of Meetings about the topic')
     figure_star.savefig(filename,format='eps')
     figure_star.clf()
     plot.close(figure_star)
+
+
+    figure_star = plot.figure()
+    ax_star = figure_star.add_subplot(111)
+    filename = 'Topic_meetings_per_Year_Normalized.eps'
+    ax_star.plot(dark_year,dark_total / n_meetings_that_year * 100.0,'o-k',markersize=10,linewidth=5,label='Dark')
+    ax_star.plot(star_year,star_total / n_meetings_that_year * 100.0,'o-r',markersize=10,linewidth=5,label='Stars')
+    ax_star.plot(galax_year,galax_total / n_meetings_that_year * 100.0,'o-b',markersize=10,linewidth=5,label='Galaxies')
+    ax_star.plot(planet_year,planet_total / n_meetings_that_year * 100.0,'o-g',markersize=10,linewidth=5,label='Planets')
+    ax_star.plot(cosmology_year,cosmology_total / n_meetings_that_year * 100.0,'o-c',markersize=10,linewidth=5,label='Cosmology')
+    ax_star.plot(solar_year,solar_total / n_meetings_that_year * 100.0,'o-y',markersize=10,linewidth=5,label='Solar')
+    ax_star.plot(dynamic_year,dynamic_total / n_meetings_that_year * 100.0,'o-m',markersize=10,linewidth=5,label='Dynamic')
+
+
+    plot.legend(loc=2,ncol=2)
+    ax_star.set_xlabel('Year')
+    ax_star.set_ylabel('Percentage of all astro meetings')
+    figure_star.savefig(filename,format='eps')
+    figure_star.clf()
+    plot.close(figure_star)
+
 
     return(0)
 
@@ -204,11 +232,18 @@ def main():
 
     #Read in files and parse
     title,start_date,end_date,keyword,location,year,n_meetings_that_year = parse_files_like_a_boss()
-    print n_meetings_that_year
+
+
+
+
+
+
+
+
 
 
     #make plots of meetings over years and meetings over months
-    dummy = make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year)
+    dummy = make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year,n_meetings_that_year)
 
 
 
