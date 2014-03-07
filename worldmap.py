@@ -27,12 +27,14 @@ for filename in numpy.sort(glob.glob("data/meeting_list_????_utf8_with_GoogleMap
       pass;
 
 # Draw projection with coastlines and countries.
-# Do not color continents, otherwise it will always be above scatterplot.
-pyplot.figure();
+pyplot.figure(figsize=(20,12));
 m = Basemap(projection="kav7", lon_0=0, resolution="l");
-m.drawmapboundary(fill_color="white");
-m.drawcoastlines();
-m.drawcountries();
+m.drawmapboundary(fill_color="white", zorder=1);
+m.fillcontinents(color="#ddddff");
+m.drawcoastlines(zorder=2);
+m.drawcountries(zorder=2);
 # Transform geographical coordinates into Basemap coordinates, and plot.
 x, y = m(longArray,latArray);
-m.scatter(x, y, marker="o", color="k");
+m.scatter(x, y, marker="o", color="r", s=6, zorder=3);
+# Save plot.
+pyplot.savefig("worldmap.png");
