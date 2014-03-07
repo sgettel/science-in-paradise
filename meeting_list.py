@@ -160,37 +160,13 @@ def main():
     #Generate lists of meetings
     #dummy = make_lists_like_a_boss()
 
+    #Read in files and parse
     title,start_date,end_date,keyword,location,year = parse_files_like_a_boss()
 
-    year_plot = []
-    number_of_meetings = []
 
+    #make plots of meetings over years and meetings over months
+    dummy = make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year)
 
-    #=============================== MAKING PLOTS ====================================
-    #Meetings over years
-    for i in range(1996,2015):
-        year_plot.append(i)
-        number_to_find = 0
-        for j in range(len(year)):
-            if i == year[j]:
-                number_to_find = number_to_find+1
-        number_of_meetings.append(number_to_find)
-    year_plot = np.array([float(a) for a in year_plot])
-    number_of_meetings = np.array([float(a) for a in number_of_meetings])
-
-    figure_star = plot.figure()
-    ax_star = figure_star.add_subplot(111)
-    filename = 'Meetings_per_Year.eps'
-    ax_star.plot(year_plot,number_of_meetings,'og',markersize=10)
-    ax_star.set_xlabel('Year')
-    ax_star.set_ylabel('Number of Meetings')
-    figure_star.savefig(filename,format='eps')
-    figure_star.clf()
-    plot.close(figure_star)
-
-
-
-    #
 
 
 
