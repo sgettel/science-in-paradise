@@ -26,8 +26,10 @@ import matplotlib.pyplot as plot
 import urllib2 as urllib
 
 def make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year):
+    year_plot = []
+    number_of_meetings = []
     #Meetings over years
-    for i in range(1996,2015):
+    for i in range(1996,2014):
         year_plot.append(i)
         number_to_find = 0
         for j in range(len(year)):
@@ -53,7 +55,7 @@ def make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,lo
     months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
     number = np.zeros(len(months))
     for i in range(len(start_date)):
-        year,dash,rest = start_date[i].partition('-')
+        the_year,dash,rest = start_date[i].partition('-')
         month,dash,days = rest.partition('-')
         month_integer = int(month)
         number[month_integer-1] = number[month_integer-1]+1
@@ -70,6 +72,29 @@ def make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,lo
     fig.savefig('Meetings_Months.eps',format='eps')
     fig.clf()
     plot.close(fig)
+
+
+    garbage,star_year,star_total = count_strings_like_a_boss(title,keyword,year,'STAR')
+    garbage,galax_year,galax_total = count_strings_like_a_boss(title,keyword,year,'GALAX')
+    garbage,planet_year,planet_total = count_strings_like_a_boss(title,keyword,year,'PLANET')
+    garbage,dark_year,dark_total = count_strings_like_a_boss(title,keyword,year,'DARK')
+    garbage,cosmology_year,cosmology_total = count_strings_like_a_boss(title,keyword,year,'COSMOLOGY')
+
+    figure_star = plot.figure()
+    ax_star = figure_star.add_subplot(111)
+    filename = 'Topic_meetings_per_Year.eps'
+    ax_star.plot(dark_year,dark_total,'o-k',markersize=10,linewidth=5,label='Dark')
+    ax_star.plot(star_year,star_total,'o-r',markersize=10,linewidth=5,label='Stars')
+    ax_star.plot(galax_year,galax_total,'o-b',markersize=10,linewidth=5,label='Galaxies')
+    ax_star.plot(planet_year,planet_total,'o-g',markersize=10,linewidth=5,label='Planets')
+    ax_star.plot(cosmology_year,cosmology_total,'o-c',markersize=10,linewidth=5,label='Cosmology')
+    plot.legend(loc=2)
+
+    ax_star.set_xlabel('Year')
+    ax_star.set_ylabel('Number of Meetings about the topic')
+    figure_star.savefig(filename,format='eps')
+    figure_star.clf()
+    plot.close(figure_star)
 
     return(0)
 
@@ -94,9 +119,9 @@ def parse_files_like_a_boss():
     location = []
     year = []
 
-    for i in range(1996,2015):
+    for i in range(1996,2014):
         if i > 1995:
-            file = open('meeting_list_'+str(i)+'.txt','r')
+            file = open('./data/meeting_list_'+str(i)+'.txt','r')
             for line in file:
                 thing_to_parse = line
                 end_of_line = 0
@@ -138,7 +163,7 @@ def count_strings_like_a_boss(title,keyword,year,topicstring):
     #print topicstring
 
     topicstring = topicstring.upper()
-    years = np.arange(1996,2015)
+    years = np.arange(1996,2014)
     total_per_year = np.zeros(len(years))
 
     total = 0
@@ -174,6 +199,7 @@ def main():
 
     #make plots of meetings over years and meetings over months
     dummy = make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year)
+
 
 
 
