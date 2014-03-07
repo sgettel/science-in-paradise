@@ -25,6 +25,54 @@ import matplotlib.pyplot as plot
 
 import urllib2 as urllib
 
+def make_meetings_vs_time_plots_like_a_boss(title,start_date,end_date,keyword,location,year):
+    #Meetings over years
+    for i in range(1996,2015):
+        year_plot.append(i)
+        number_to_find = 0
+        for j in range(len(year)):
+            if i == year[j]:
+                number_to_find = number_to_find+1
+        number_of_meetings.append(number_to_find)
+    year_plot = np.array([float(a) for a in year_plot])
+    number_of_meetings = np.array([float(a) for a in number_of_meetings])
+
+    figure_star = plot.figure()
+    ax_star = figure_star.add_subplot(111)
+    filename = 'Meetings_per_Year.eps'
+    ax_star.plot(year_plot,number_of_meetings,'og',markersize=10)
+    ax_star.set_xlabel('Year')
+    ax_star.set_ylabel('Number of Meetings')
+    figure_star.savefig(filename,format='eps')
+    figure_star.clf()
+    plot.close(figure_star)
+
+
+
+    #Meetings over Months
+    months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    number = np.zeros(len(months))
+    for i in range(len(start_date)):
+        year,dash,rest = start_date[i].partition('-')
+        month,dash,days = rest.partition('-')
+        month_integer = int(month)
+        number[month_integer-1] = number[month_integer-1]+1
+
+    N = 12 #months
+    ind = np.arange(N)
+    width = 0.5
+
+    fig, ax = plot.subplots()
+    rects = ax.bar(ind,number,width,color='b')
+    ax.set_ylabel('Number of Meetings')
+    ax.set_xticks(ind+width)
+    ax.set_xticklabels(months)
+    fig.savefig('Meetings_Months.eps',format='eps')
+    fig.clf()
+    plot.close(fig)
+
+    return(0)
+
 
 
 def make_lists_like_a_boss():
