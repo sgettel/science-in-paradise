@@ -1,4 +1,4 @@
-#!/usr/env/python3
+#!/usr/bin/env python3
 # Translate conference venue strings to geographical coordinates.
 
 import pickle;
